@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    
+    <!-- Title & Meta Description untuk SEO & WhatsApp Preview -->
+    <title>🎥 Galeri Video Seru • WhatsApp Group</title>
+    <meta name="description" content="Gabung di grup WhatsApp Galeri Video Seru. Tonton dan bagikan berbagai video keren dari anggota grup!">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/grup-video-seru"> <!-- Ganti dengan URL asli web Anda -->
+    <meta property="og:title" content="🎥 Galeri Video Seru - Grup WhatsApp Berbagi Video">
+    <meta property="og:description" content="Lihat koleksi video sunset, liburan, kucing lucu, tutorial, dan masih banyak lagi. Gabung sekarang!">
+    <meta property="og:image" content="https://picsum.photos/id/104/1200/630">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Thumbnail Video Seru di Grup">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🎥 Galeri Video Seru - Grup WhatsApp">
+    <meta name="twitter:description" content="Berbagi video seru di grup. Tonton dan klik video untuk membuka tautan menarik!">
+    <meta name="twitter:image" content="https://picsum.photos/id/104/1200/630">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #e4e9f0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 95vh;
+            max-height: 850px;
+            background: #efeae2;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: #f0f2f5;
+            padding: 12px 18px;
+            border-bottom: 1px solid #e9edef;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #075e54;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover { background: #e0e4e9; }
+
+        .group-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #25d366, #075e54);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        .group-info {
+            flex: 1;
+        }
+
+        .group-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #111b21;
+        }
+
+        .group-meta {
+            font-size: 0.7rem;
+            color: #667781;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-image: radial-gradient(circle at 10% 30%, rgba(200,200,200,0.05) 2%, transparent 2.5%);
+            background-size: 28px 28px;
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .incoming {
+            align-self: flex-start;
+        }
+
+        .outgoing {
+            align-self: flex-end;
+        }
+
+        .sender-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 3px;
+            margin-left: 8px;
+            color: #075e54;
+        }
+
+        .outgoing .sender-name {
+            display: none;
+        }
+
+        .bubble-content {
+            background-color: white;
+            border-radius: 18px 18px 18px 4px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+        }
+
+        .outgoing .bubble-content {
+            background-color: #d9fdd3;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .video-message {
+            padding: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #1f2c34;
+            max-width: 260px;
+            cursor: pointer;
+        }
+
+        .video-thumb {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.1s;
+        }
+
+        .video-thumb:hover {
+            filter: brightness(0.95);
+        }
+
+        .play-overlay-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-overlay-video i {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 2px 5px black;
+        }
+
+        .video-duration {
+            position: absolute;
+            bottom: 6px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: white;
+        }
+
+        .video-caption {
+            padding: 8px 12px 10px;
+            font-size: 0.8rem;
+            color: #e9edef;
+            background: #1f2c34;
+            border-top: 1px solid #2a3942;
+        }
+
+        .text-message {
+            word-break: break-word;
+        }
+
+        .message-meta {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            font-size: 0.65rem;
+            color: #8696a0;
+            margin-top: 4px;
+            padding-right: 6px;
+        }
+
+        .incoming .message-meta {
+            justify-content: flex-start;
+            padding-left: 8px;
+        }
+
+        .input-area {
+            background: #f0f2f5;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid #e9edef;
+        }
+
+        .input-field {
+            flex: 1;
+            background: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .send-btn {
+            background: #075e54;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #064e44;
+        }
+
+        .messages-area::-webkit-scrollbar {
+            width: 5px;
+        }
+        .messages-area::-webkit-scrollbar-track {
+            background: #e9edef;
+        }
+        .messages-area::-webkit-scrollbar-thumb {
+            background: #b9c4ce;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 550px) {
+            body { padding: 0; }
+            .chat-container { height: 100vh; border-radius: 0; }
+            .message-bubble { max-width: 90%; }
+        }
+    </style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-header">
+        <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i></button>
+        <div class="group-avatar">G</div>
+        <div class="group-info">
+            <div class="group-name">🎥 Galeri Video Seru</div>
+            <div class="group-meta">
+                <span><i class="fas fa-users"></i> 5 anggota</span>
+                <span><i class="fas fa-video"></i> 12 video</span>
+            </div>
+        </div>
+        <i class="fas fa-ellipsis-v" style="color:#54656f; cursor:pointer;"></i>
+    </div>
+
+    <div class="messages-area" id="messagesArea"></div>
+
+    <div class="input-area">
+        <i class="far fa-smile-wink" style="color:#54656f; font-size:1.3rem;"></i>
+        <input type="text" class="input-field" id="messageInput" placeholder="Ketik pesan ke grup...">
+        <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script>
+    // ======================== KONFIGURASI ========================
+    // Ganti URL di bawah ini dengan link tujuan saat tombol kembali diklik
+    const BACK_LINK = 'https://www.yutobe.com';  // <-- Ubah sesuai keinginan Anda
+
+    // ======================== DATA PESAN ========================
+    const messages = [
+        {
+            id: 1,
+            type: "text",
+            sender: "incoming",
+            senderName: "Andini",
+            text: "Halo semua! Ayo kita kumpulkan video seru di grup ini 📹",
+            time: "09:04",
+            status: "read"
+        },
+        {
+            id: 2,
+            type: "video",
+            sender: "incoming",
+            senderName: "Andini",
+            thumbnail: "https://freeimage.host/i/CBBdu8Q",
+            duration: "0:48",
+            caption: "Sunset di pantai, keren banget!",
+            time: "09:10",
+            link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            status: "read"
+        },
+        {
+            id: 3,
+            type: "video",
+            sender: "incoming",
+            senderName: "Budi",
+            thumbnail: "https://picsum.photos/id/104/400/225",
+            duration: "1:22",
+            caption: "Liburan ke Bromo 🏔️",
+            time: "09:15",
+            link: "https://www.instagram.com/",
+            status: "read"
+        },
+        {
+            id: 4,
+            type: "text",
+            sender: "outgoing",
+            text: "Wah mantap! Nih aku juga punya video",
+            time: "09:18",
+            status: "read"
+        },
+        {
+            id: 5,
+            type: "video",
+            sender: "outgoing",
+            thumbnail: "https://picsum.photos/id/26/400/225",
+            duration: "1:05",
+            caption: "Kucing lucu main air 😻",
+            time: "09:20",
+            link: "https://www.tiktok.com/",
+            status: "read"
+        },
+        {
+            id: 6,
+            type: "video",
+            sender: "incoming",
+            senderName: "Citra",
+            thumbnail: "https://picsum.photos/id/30/400/225",
+            duration: "2:10",
+            caption: "Vlog masak rendang enak",
+            time: "09:25",
+            link: "https://www.youtube.com/",
+            status: "read"
+        },
+        {
+            id: 7,
+            type: "text",
+            sender: "incoming",
+            senderName: "Dedi",
+            text: "Keren-keren! Aku baru selesai editing video ini",
+            time: "09:30",
+            status: "read"
+        },
+        {
+            id: 8,
+            type: "video",
+            sender: "incoming",
+            senderName: "Dedi",
+            thumbnail: "https://picsum.photos/id/42/400/225",
+            duration: "3:45",
+            caption: "Tutorial editing video untuk pemula",
+            time: "09:32",
+            link: "https://www.google.com",
+            status: "read"
+        },
+        {
+            id: 9,
+            type: "video",
+            sender: "outgoing",
+            thumbnail: "https://picsum.photos/id/96/400/225",
+            duration: "0:55",
+            caption: "Hewan lucu di kebun binatang 🦁",
+            time: "09:38",
+            link: "https://www.facebook.com/",
+            status: "read"
+        },
+        {
+            id: 10,
+            type: "video",
+            sender: "incoming",
+            senderName: "Andini",
+            thumbnail: "https://picsum.photos/id/20/400/225",
+            duration: "1:30",
+            caption: "Tari tradisional yang indah",
+            time: "09:45",
+            link: "https://twitter.com/",
+            status: "read"
+        },
+        {
+            id: 11,
+            type: "text",
+            sender: "outgoing",
+            text: "Makasih semua sudah berbagi! Lanjutkan 👍",
+            time: "09:50",
+            status: "read"
+        }
+    ];
+
+    // ======================== FUNGSI ========================
+    function openLink(url) {
+        if (url) {
+            window.open(url, "_blank");
+        } else {
+            alert("Video ini tidak memiliki link. Tambahkan properti 'link' pada objek pesan video.");
+        }
+    }
+
+    function renderMessages() {
+        const container = document.getElementById('messagesArea');
+        if (!container) return;
+        container.innerHTML = '';
+
+        messages.forEach(msg => {
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = `message-bubble ${msg.sender === 'incoming' ? 'incoming' : 'outgoing'}`;
+            
+            let senderNameHtml = '';
+            if (msg.type !== 'video' && msg.sender === 'incoming' && msg.senderName) {
+                senderNameHtml = `<div class="sender-name">${escapeHtml(msg.senderName)}</div>`;
+            }
+            let videoSenderHtml = '';
+            if (msg.type === 'video' && msg.sender === 'incoming' && msg.senderName) {
+                videoSenderHtml = `<div class="sender-name" style="margin-left:0; margin-bottom:4px;">${escapeHtml(msg.senderName)}</div>`;
+            }
+
+            let contentHtml = '';
+            if (msg.type === 'text') {
+                contentHtml = `
+                    ${senderNameHtml}
+                    <div class="bubble-content text-message">${escapeHtml(msg.text)}</div>
+                `;
+                if (msg.link) {
+                    bubbleDiv.style.cursor = 'pointer';
+                    bubbleDiv.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openLink(msg.link);
+                    });
+                }
+            }
+            else if (msg.type === 'video') {
+                const thumbUrl = msg.thumbnail || 'https://picsum.photos/id/0/400/225';
+                const videoCaption = msg.caption ? escapeHtml(msg.caption) : '';
+                contentHtml = `
+                    ${videoSenderHtml}
+                    <div class="bubble-content video-message" style="padding:0; cursor:pointer;" data-link="${msg.link || ''}">
+                        <div class="video-thumb" style="background-image: url('${thumbUrl}'); background-size: cover;">
+                            <div class="play-overlay-video">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="video-duration">${msg.duration}</div>
+                        </div>
+                        ${videoCaption ? `<div class="video-caption">${videoCaption}</div>` : ''}
+                    </div>
+                `;
+                bubbleDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const link = msg.link;
+                    if (link) openLink(link);
+                    else alert("Video ini belum memiliki link. Tambahkan properti 'link'.");
+                });
+            }
+
+            bubbleDiv.innerHTML = contentHtml + `
+                <div class="message-meta">
+                    <span>${msg.time}</span>
+                    ${msg.sender === 'outgoing' ? '<i class="fas fa-check-double" style="color:#25d366;"></i>' : ''}
+                </div>
+            `;
+            container.appendChild(bubbleDiv);
+        });
+
+        scrollToBottom();
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function scrollToBottom() {
+        const area = document.getElementById('messagesArea');
+        if (area) area.scrollTop = area.scrollHeight;
+    }
+
+    function addNewTextMessage(text) {
+        if (!text.trim()) return;
+        const newMsg = {
+            id: Date.now(),
+            type: "text",
+            sender: "outgoing",
+            text: text,
+            time: new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }),
+            status: "read"
+        };
+        messages.push(newMsg);
+        renderMessages();
+
+        setTimeout(() => {
+            const autoReply = {
+                id: Date.now() + 1,
+                type: "text",
+                sender: "incoming",
+                senderName: "Andini",
+                text: "👍 Keren! Terima kasih sudah berbagi.",
+                time: new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' }),
+                status: "read"
+            };
+            messages.push(autoReply);
+            renderMessages();
+        }, 1500);
+    }
+
+    // ======================== INISIALISASI ========================
+    document.addEventListener('DOMContentLoaded', () => {
+        renderMessages();
+
+        const sendBtn = document.getElementById('sendBtn');
+        const inputMsg = document.getElementById('messageInput');
+        if (sendBtn && inputMsg) {
+            sendBtn.addEventListener('click', () => {
+                addNewTextMessage(inputMsg.value);
+                inputMsg.value = '';
+            });
+            inputMsg.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addNewTextMessage(inputMsg.value);
+                    inputMsg.value = '';
+                }
+            });
+        }
+
+        // ===== TOMBOL KEMBALI - REDIRECT KE BACK_LINK =====
+        const backBtn = document.getElementById('backBtn');
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                window.location.href = BACK_LINK;
+            });
+        }
+    });
+</script>
+</body>
+</html>
